@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Clock from "./components/Clock";
 import "./App.css";
 import { uuid } from "../utils/uuid";
@@ -6,64 +6,72 @@ import moment from "moment-timezone";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import TimeZoneList from "./components/TimeZoneList";
+import { TimeZoneContext } from "./context/TimeZoneContext";
+import Clocks from "./components/Clocks";
 
 const tz = moment.tz.names();
 
 function App() {
-  const [timeZones, setTimeZones] = useState(tz);
+  const arrTz = tz.map((z) => {
+    return { isSelected: false, timezone: z };
+  });
 
-  const [selectedTimezone, setSelectedTimeZone] = useState("Select Time zone");
+  const [timeZones, setTimeZones] = useState(arrTz);
 
-  const [clocks, setClocks] = useState([
-    "Asia/Manila",
-    "Africa/Khartoum",
-    "America/Denver",
-  ]);
+  useEffect(() => {
+    const slcted = JSON.parse(window.localStorage.getItem('clock'));
+  },[])
 
   return (
-    <div className="App">
-      <Navbar />
-      <Header />
-      <div className="py-6 flex justify-around">
-        <div className="flex gap-4 place-items-center">
-          <select
-            className="select"
-            placeholder="Time zone"
-            name="timezoneSelect"
-            onChange={(val) => setSelectedTimeZone(val.target.value)}
-          >
-            <option name="default" disabled selected></option>
-            {timeZones.map((timeZone) => {
-              return (
-                <option
-                  value={timeZone}
-                  key={uuid(5)}
-                  selected={selectedTimezone == timeZone}
-                >
-                  {timeZone}
-                </option>
-              );
-            })}
-          </select>
+    <TimeZoneContext.Provider value={timeZones}>
+      <div className="App">
+        <div className="drawer drawer-end">
+          <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex flex-col">
+            {/* <!-- Navbar --> */}
+            <div className="w-full navbar bg-base-300">
+              <div className="flex-1 px-2 mx-2">World Time</div>
 
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              setClocks([...new Set([...clocks, selectedTimezone])]);
-            }}
-          >
-            Add Clock {tz.length}
-          </button>
+              <div className="flex-none hidde lg:block">
+                <div className="flex-none lg:hide">
+                  <label
+                    htmlFor="my-drawer-3"
+                    className="btn btn-square btn-ghost"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </label>
+                </div>
+              </div>
+            </div>
+            {/* <!-- Page content here --> */}
+
+            <Clocks/>
+          </div>
+
+          {/* SIDE BAR HERE */}
+          <TimeZoneList />
         </div>
       </div>
-
-      <div className="flex flex-wrap justify-center gap-8">
-        {clocks.map((clock) => (
-          <Clock key={uuid(5)} timeZone={clock} />
-        ))}
-      </div>
-      <Footer />
-    </div>
+    </TimeZoneContext.Provider>
   );
 }
 

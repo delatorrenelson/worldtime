@@ -15,9 +15,10 @@ code {
 
 .clock {
   --size: 18.75rem;
-  width: 300px;
-  height: 300px;
+  width: var(--size);
+  height: var(--size);
   border-radius: 50%;
+
   position: relative;
   top: 50%;
   left: 50%;
@@ -29,7 +30,7 @@ code {
 }
 
 .clock::after {
-  --sizeAfter : 0.75rem;
+  --sizeAfter: 0.75rem;
   background: #aaa;
   content: "";
   width: var(--sizeAfter);
@@ -55,8 +56,10 @@ code {
 
 .min_hand {
   position: absolute;
-  width: 0.25rem; /*4px;*/
-  height: 5rem; /*80px;*/
+  width: 0.25rem;
+  /*4px;*/
+  height: 5rem;
+  /*80px;*/
   background: #444;
   top: 22.5%;
   left: 49%;
@@ -65,8 +68,10 @@ code {
 
 .sec_hand {
   position: absolute;
-  width:0.125rem; /*2px*/
-  height: 7.375rem; /*118px;*/
+  width: 0.125rem;
+  /*2px*/
+  height: 7.375rem;
+  /*118px;*/
   background: red;
   top: 10.5%;
   left: 50%;
@@ -80,7 +85,8 @@ code {
 }
 
 .twelve {
-  top: 0.625rem;/*10px;*/
+  top: 0.625rem;
+  /*10px;*/
   left: 46%;
 }
 
@@ -138,4 +144,3 @@ code {
   top: 25%;
   left: 10%;
 }
-
