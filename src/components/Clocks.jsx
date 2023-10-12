@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import Clock from "./Clock";
 import {  TimeZoneContext } from "../context/TimeZoneContext";
 import { uuid } from "../../utils/uuid";
-import { LOCALSTORAGE_CLOCKS, getSelectedClocks } from "../context/LocalStorage";
+import { getSelectedClocks } from "../context/LocalStorage";
 
 export default function Clocks() {
   const txs = useContext(TimeZoneContext);
   txs.selectedTimeZones = getSelectedClocks()
-  const {selectedTimeZones, setSelectedTimeZones} = useContext(TimeZoneContext);
+  const {selectedTimeZones} = useContext(TimeZoneContext);
 
   
   return (

@@ -12,7 +12,6 @@ code {
     monospace;
 }
 
-
 .clock {
   --size: 18.75rem;
   width: var(--size);

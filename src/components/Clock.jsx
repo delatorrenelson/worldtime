@@ -24,7 +24,7 @@ export default function Clock({ clock }) {
   }, []);
 
   return (
-    <div className="card content-center p-6 gap-6 items-center w-96 bg-base-100 outlin outline-1">
+    <div className="card content-center gap-4 items-center min-w-[20%] bg-base-100">
       <p className="text-xl font-semibold text-center">{timezone}</p>
       <figure className="">
         <div className="clock outline">

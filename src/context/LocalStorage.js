@@ -2,7 +2,7 @@ export const LOCALSTORAGE_CLOCKS = "clocks";
 
 // ensure there is 'clock' in windows.localstorage
 const clocks = JSON.parse(window.localStorage.getItem(LOCALSTORAGE_CLOCKS))
-if (clocks.length == 0) {
+if (!clocks) {
   window.localStorage.setItem(LOCALSTORAGE_CLOCKS, JSON.stringify([]));
 }
 

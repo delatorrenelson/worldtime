@@ -1,7 +1,5 @@
-import { createContext, useEffect } from "react";
-import moment from 'moment';
-import 'moment-timezone';
-import { LOCALSTORAGE_CLOCKS } from "./LocalStorage";
+import { createContext } from "react";
+import moment from 'moment-timezone';
 
 export const LOCAL_TIMEZONE = moment.tz.guess();
 
@@ -14,7 +12,7 @@ const timezones = moment.tz.names().map((z) => {
 });
 
 export const TimeZoneContext = createContext({
-  localTimeZone: LOCAL_TIMEZONE,
+  localTimeZone: moment.tz.guess(),
   availableTimeZones: timezones,
   selectedTimeZones: [],
 });
