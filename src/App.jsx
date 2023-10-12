@@ -1,30 +1,22 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import Clock from "./components/Clock";
-import "./App.css";
-import { uuid } from "../utils/uuid";
-import moment from "moment-timezone";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import { useContext, useEffect, useState } from "react";
 import TimeZoneList from "./components/TimeZoneList";
 import { TimeZoneContext } from "./context/TimeZoneContext";
 import Clocks from "./components/Clocks";
+import { getSelectedClocks } from "./context/LocalStorage";
 
-const tz = moment.tz.names();
+import "./App.css";
 
 function App() {
-  const arrTz = tz.map((z) => {
-    return { isSelected: false, timezone: z };
-  });
-
-  const [timeZones, setTimeZones] = useState(arrTz);
+  const {availableTimeZones} = useContext(TimeZoneContext);
+  const [timeZones, setTimeZones] = useState([]);
+  const [selectedTimeZones, setSelectedTimeZones] = useState([])
 
   useEffect(() => {
-    const slcted = JSON.parse(window.localStorage.getItem('clock'));
-  },[])
+    setSelectedTimeZones(getSelectedClocks());
+  }, [])
 
   return (
-    <TimeZoneContext.Provider value={timeZones}>
+    <TimeZoneContext.Provider value={{ selectedTimeZones, setSelectedTimeZones, availableTimeZones }}>
       <div className="App">
         <div className="drawer drawer-end">
           <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -64,7 +56,7 @@ function App() {
             </div>
             {/* <!-- Page content here --> */}
 
-            <Clocks/>
+            <Clocks />
           </div>
 
           {/* SIDE BAR HERE */}
@@ -72,6 +64,7 @@ function App() {
         </div>
       </div>
     </TimeZoneContext.Provider>
+
   );
 }
 
