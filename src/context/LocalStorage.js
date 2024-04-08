@@ -10,9 +10,7 @@ if (!clocks) {
  *
  * @returns Array of Object
  */
-export const getSelectedClocks = () => {
-  return JSON.parse(window.localStorage.getItem(LOCALSTORAGE_CLOCKS));
-};
+export const getSelectedClocks = () => JSON.parse(window.localStorage.getItem(LOCALSTORAGE_CLOCKS))
 
 export const selectClock = (clock = {}) => {
   const clocksFromLocalStorage = getSelectedClocks() || [];

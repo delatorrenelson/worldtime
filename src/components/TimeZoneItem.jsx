@@ -18,7 +18,6 @@ export default function TimeZoneItem({ tz }) {
     setSelectedTimeZones(getSelectedClocks());
   };
 
-
   return (
     <li
       className="flex flex-row"

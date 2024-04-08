@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import {  TimeZoneContext } from "../context/TimeZoneContext";
 import moment from "moment";
+import { getSelectedClocks, removeClock } from "../context/LocalStorage";
 
 export default function Clock({ clock }) {
+  const {selectedTimeZones, setSelectedTimeZones} = useContext(TimeZoneContext); 
   const [utc, setUTC] = useState("");
-  const { isSelected, timezone } = clock;
+  const {  timezone } = clock;
 
   const [hours, setHours] = useState();
   const [minutes, setMinutes] = useState();
@@ -13,11 +16,9 @@ export default function Clock({ clock }) {
     const intervalId = setInterval(() => {
       const zone = moment().tz(timezone);
       setUTC(() => zone.format("hh:mm:ss A"));
-
       setSeconds(() => zone.seconds());
       setMinutes(() => zone.minutes());
-      setHours(() => zone.hours());
-      // setUTC(() => moment().tz(timeZone).format("hh:mm:ss A")); if you want to display miliseconds
+      setHours(() => zone.hours());      
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -61,7 +62,11 @@ export default function Clock({ clock }) {
         </div>
       </figure>
 
-      <p className="text-xl text-center">{utc}</p>
+      <p className="text-xl text-center">{utc}</p>      
+      <button className="btn-xs btn-error btn-ghost" onClick={() => {
+            removeClock(clock)
+            setSelectedTimeZones(getSelectedClocks())        
+        }}>Remove</button>
     </div>
   );
 }

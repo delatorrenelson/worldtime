@@ -1,7 +1,8 @@
-import React, { useContext,  useState } from "react";
+import React, { useContext, useState } from "react";
 import { uuid } from "../../utils/uuid";
 import { TimeZoneContext } from "../context/TimeZoneContext";
 import TimeZoneItem from "./TimeZoneItem";
+
 
 export default function TimeZoneList() {
   const { availableTimeZones, selectedTimeZones } = useContext(TimeZoneContext);
@@ -10,9 +11,12 @@ export default function TimeZoneList() {
   const [showSelectedTimeZonesOnly, setShowSelectedTimeZonesOnly] = useState(false)
   const [showTimeDifference, setShowTimeDefference] = useState(false)
 
+
+
   const search = (e) => {
-    const searchText = e.target.value.toLowerCase();
-    if (searchText != null) {
+    const searchText = e.target.value.toLowerCase().trim();
+
+    if (searchText != '') {
       const filtered = availableTimeZones.filter((tz) =>
         tz.timezone.toLowerCase().includes(searchText)
       );
