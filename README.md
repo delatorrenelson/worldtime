@@ -1,3 +1,2 @@
-# worldtime
-
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/daisyui-react-vite-dtmhjk)
+# WorldTime
+An open-source global time viewer.
