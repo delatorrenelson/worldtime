@@ -16,5 +16,3 @@ export const TimeZoneContext = createContext({
   availableTimeZones: timezones,
   selectedTimeZones: [],
 });
-
-

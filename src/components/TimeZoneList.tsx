@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
-import { uuid } from "../../utils/uuid";
+import { uuid } from "../utils/uuid";
 import { TimeZoneContext } from "../context/TimeZoneContext";
 import TimeZoneItem from "./TimeZoneItem";
-
+import { useAppSelector } from "../store/hooks";
+import SearchInput from "./SearchInput";
 
 export default function TimeZoneList() {
   const { availableTimeZones, selectedTimeZones } = useContext(TimeZoneContext);
@@ -11,9 +12,11 @@ export default function TimeZoneList() {
   const [showSelectedTimeZonesOnly, setShowSelectedTimeZonesOnly] = useState(false)
   const [showTimeDifference, setShowTimeDefference] = useState(false)
 
+  const timeZoneStore = useAppSelector((state) => state.timeZone);
+  console.log(timeZoneStore)
 
 
-  const search = (e) => {
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchText = e.target.value.toLowerCase().trim();
 
     if (searchText != '') {
@@ -33,18 +36,12 @@ export default function TimeZoneList() {
     setShowTimeDefference(!showTimeDifference)
   }
 
-
   return (
     <div className="drawer-side min-w-min">
       <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
       <div className="menu p-4 bg-base-100 flex gap-4 overflow-y-hidden">
         <div className="grid grid-flow-col  gap-2">
-          <input
-            type="text"
-            className="input w-96 max-w-xs outline outline-1 outline-slate-100 bg-inherit z-10"
-            onChange={search}
-            placeholder="Search"
-          />
+          <SearchInput onSearch={onSearch} />
         </div>
         <div className="flex flex-row gap-4 hidden">
           <div className="flex flex-row gap-2 place-content-end text-xs">
