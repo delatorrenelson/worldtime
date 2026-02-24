@@ -1,24 +1,37 @@
-import { useEffect, useState, useContext } from "react";
-import {  TimeZoneContext } from "../context/TimeZoneContext";
-import moment from "moment";
-import { getSelectedClocks, removeClock } from "../context/LocalStorage";
+import { useEffect, useState } from "react";
+import moment from "moment-timezone";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { removeTimeZone, LOCAL_TIMEZONE, type TimeZoneInfo } from "../features/timeZone/timeZoneSlice";
 
-export default function Clock({ clock }) {
-  const {selectedTimeZones, setSelectedTimeZones} = useContext(TimeZoneContext); 
+export default function Clock({ clock }: { clock: TimeZoneInfo }) {
+  const dispatch = useAppDispatch()
+  const clockSize = useAppSelector((state) => state.timeZone.clockSize);
   const [utc, setUTC] = useState("");
-  const {  timezone } = clock;
+  const { timezone } = clock;
 
-  const [hours, setHours] = useState();
-  const [minutes, setMinutes] = useState();
-  const [seconds, setSeconds] = useState();
+  const sizeMap: Record<string, string> = {
+    sm: "150px",
+    md: "200px",
+    lg: "250px",
+    xl: "300px",
+    "2xl": "380px",
+    "3xl": "460px",
+    "4xl": "560px",
+    "5xl": "700px",
+  };
+
+  const [hours, setHours] = useState<number>(0);
+  const [minutes, setMinutes] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       const zone = moment().tz(timezone);
       setUTC(() => zone.format("hh:mm:ss A"));
+
       setSeconds(() => zone.seconds());
       setMinutes(() => zone.minutes());
-      setHours(() => zone.hours());      
+      setHours(() => zone.hours());
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -26,9 +39,11 @@ export default function Clock({ clock }) {
 
   return (
     <div className="card content-center gap-4 items-center min-w-[20%] bg-base-100">
-      <p className="text-xl font-semibold text-center">{timezone}</p>
-      <figure className="">
-        <div className="clock outline">
+      <figure className="p-6">
+        <div
+          className="clock outline stats-value shadow-lg"
+          style={{ '--clock-size': sizeMap[clockSize] } as React.CSSProperties}
+        >
           <div
             className="hour_hand"
             style={{
@@ -62,11 +77,16 @@ export default function Clock({ clock }) {
         </div>
       </figure>
 
-      <p className="text-xl text-center">{utc}</p>      
-      <button className="btn-xs btn-error btn-ghost" onClick={() => {
-            removeClock(clock)
-            setSelectedTimeZones(getSelectedClocks())        
-        }}>Remove</button>
+      <div className="flex items-center gap-2">
+        <p className="text-3xl font-semibold text-center">{timezone}</p>
+        {timezone === LOCAL_TIMEZONE && (
+          <span className="badge badge-primary badge-sm">Local</span>
+        )}
+      </div>
+      <p className="text-xl text-center">{utc}</p>
+      <button className="btn-xs btn-error btn-ghost cursor-pointer" onClick={() => {
+        dispatch(removeTimeZone(clock))
+      }}>Remove</button>
     </div>
   );
 }

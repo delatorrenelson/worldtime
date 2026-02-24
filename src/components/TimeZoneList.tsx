@@ -1,39 +1,26 @@
-import React, { useContext, useState } from "react";
-import { uuid } from "../utils/uuid";
-import { TimeZoneContext } from "../context/TimeZoneContext";
-import TimeZoneItem from "./TimeZoneItem";
-import { useAppSelector } from "../store/hooks";
+import React, { } from "react";
+import { useAppDispatch } from "../store/hooks";
 import SearchInput from "./SearchInput";
+import TimeZones from "./TimeZones";
+import { filterTimeZones } from "../features/timeZone/timeZoneSlice";
 
 export default function TimeZoneList() {
-  const { availableTimeZones, selectedTimeZones } = useContext(TimeZoneContext);
-  const [filteredTimeZones, setFilteredTimeZones] = useState(availableTimeZones);
-
-  const [showSelectedTimeZonesOnly, setShowSelectedTimeZonesOnly] = useState(false)
-  const [showTimeDifference, setShowTimeDefference] = useState(false)
-
-  const timeZoneStore = useAppSelector((state) => state.timeZone);
-  console.log(timeZoneStore)
-
+  const dispatch = useAppDispatch()
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = e.target.value.toLowerCase().trim();
+    e.preventDefault();
 
-    if (searchText != '') {
-      const filtered = availableTimeZones.filter((tz) =>
-        tz.timezone.toLowerCase().includes(searchText)
-      );
-      setFilteredTimeZones(filtered);
-    }
+    const searchText = e.target.value.toLowerCase().trim();
+    dispatch(filterTimeZones(searchText))
   };
 
   const handleShowSelectedTimeZonesOnly = () => {
-    showSelectedTimeZonesOnly ? setFilteredTimeZones(availableTimeZones) : setFilteredTimeZones(selectedTimeZones)
-    setShowSelectedTimeZonesOnly(!showSelectedTimeZonesOnly)
+    // showSelectedTimeZonesOnly ? setFilteredTimeZones(availableTimeZones) : setFilteredTimeZones(selectedTimeZones)
+    // setShowSelectedTimeZonesOnly(!showSelectedTimeZonesOnly)
   }
 
   const handleShowTimeDifference = () => {
-    setShowTimeDefference(!showTimeDifference)
+    // setShowTimeDefference(!showTimeDifference)
   }
 
   return (
@@ -43,7 +30,7 @@ export default function TimeZoneList() {
         <div className="grid grid-flow-col  gap-2">
           <SearchInput onSearch={onSearch} />
         </div>
-        <div className="flex flex-row gap-4 hidden">
+        <div className="hidden flex-row gap-4">
           <div className="flex flex-row gap-2 place-content-end text-xs">
             <input id="selectedTimeZonesOnly" type="checkbox" onChange={() => handleShowSelectedTimeZonesOnly()} />
             <label htmlFor="selectedTimeZonesOnly">Show selected timezones only</label>
@@ -53,11 +40,7 @@ export default function TimeZoneList() {
             <label htmlFor="timeDiff">Show time difference</label>
           </div>
         </div>
-        <ul className="w-[100%] h-[100%] flex-1 overflow-y-auto">
-          {filteredTimeZones.map((tz) => (
-            <TimeZoneItem key={uuid(5)} tz={tz} />
-          ))}
-        </ul>
+        <TimeZones />
       </div>
     </div>
   );

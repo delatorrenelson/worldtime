@@ -1,38 +1,30 @@
-import React, { useContext,  useState } from "react";
-import {  TimeZoneContext } from "../context/TimeZoneContext";
-import { getSelectedClocks, removeClock, selectClock } from "../context/LocalStorage";
+import { TimeZoneInfo, toggleTimeZone } from "../features/timeZone/timeZoneSlice";
+import { useAppDispatch } from "../store/hooks";
 
-export default function TimeZoneItem({ tz }) {
-  const { setSelectedTimeZones } = useContext(TimeZoneContext);
-  const { timezone } = tz;
+function TimeZoneItem({ tz }: { tz: TimeZoneInfo }) {
+  const dispatch = useAppDispatch()
+  const { timezone, isActive } = tz;
 
-  const [isSelected, setIsSelected] = useState(getSelectedClocks().find(el => el.timezone == tz.timezone));
-
-  const handleClick = (e) => {
-    if (e.target.checked) {
-      selectClock(tz)
-    } else {
-      removeClock(tz)
-    }
-    setIsSelected(!isSelected)
-    setSelectedTimeZones(getSelectedClocks());
-  };
+  const handleClick = () => {
+    dispatch(toggleTimeZone(tz))
+  }
 
   return (
-    <li
-      className="flex flex-row"
-    >
-      <input
-        id={timezone}
-        name={timezone}
-        type="checkbox"
-        value={timezone}
-        onChange={handleClick}
-        checked={isSelected}
-      />
+    <li className="flex flex-row items-center gap-4 p-2 cursor-pointer">
       <label htmlFor={timezone} className="flex-grow">
-        {timezone}
+        <input
+          id={timezone}
+          className="checkbox checkbox-md"
+          name={'timezone'}
+          type="checkbox"
+          value={timezone}
+          onChange={handleClick}
+          checked={isActive}
+        />
+        <span className="label-text">{timezone}</span>
       </label>
     </li>
   );
 }
+
+export default TimeZoneItem;
