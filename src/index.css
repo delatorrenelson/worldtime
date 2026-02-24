@@ -13,80 +13,86 @@ code {
 }
 
 .clock {
-  --size: 18.75rem;
-  width: var(--size);
-  height: var(--size);
+  --clock-size: 18.75rem;
+  width: var(--clock-size);
+  height: var(--clock-size);
   border-radius: 50%;
-
   position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.2);
-  font-size: 24px;
-  color: #444;
+  /* Removal of top/left/transform centering as it's better handled by flex/grid containers */
+  margin: 1.5rem auto;
+  /* box-shadow: 0 4px 50px -10px rgba(0, 0, 0, 0.3); */
+  font-size: calc(var(--clock-size) * 0.08);
+  /* Proportional font size */
+  color: currentColor;
   text-align: center;
+  border: 4px solid currentColor;
 }
 
 .clock::after {
-  --sizeAfter: 0.75rem;
-  background: #aaa;
+  --dot-size: 4%;
+  background: currentColor;
   content: "";
-  width: var(--sizeAfter);
-  height: var(--sizeAfter);
+  width: var(--dot-size);
+  height: var(--dot-size);
   border-radius: 50%;
   position: absolute;
-  z-index: 2;
+  z-index: 5;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 2px solid #fff;
+  border: 2px solid white;
 }
 
 .hour_hand {
   position: absolute;
-  width: 6px;
-  height: 60px;
-  background: #222;
-  top: 30%;
+  width: 2%;
+  height: 25%;
+  background: currentColor;
+  top: 25%;
   left: 49%;
   transform-origin: bottom;
+  border-radius: 4px;
 }
 
 .min_hand {
   position: absolute;
-  width: 0.25rem;
-  /*4px;*/
-  height: 5rem;
-  /*80px;*/
-  background: #444;
-  top: 22.5%;
-  left: 49%;
+  width: 1.5%;
+  height: 35%;
+  background: currentColor;
+  top: 15%;
+  left: 49.25%;
   transform-origin: bottom;
+  border-radius: 4px;
 }
 
 .sec_hand {
   position: absolute;
-  width: 0.125rem;
-  /*2px*/
-  height: 7.375rem;
-  /*118px;*/
-  background: red;
-  top: 10.5%;
-  left: 50%;
+  width: 1%;
+  height: 45%;
+  background: #ff5252;
+  /* Vivid red */
+  top: 5%;
+  left: 49.5%;
   transform-origin: bottom;
+  border-radius: 2px;
+  z-index: 4;
 }
 
 .clock span {
   position: absolute;
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: 700;
+  font-family: inherit;
+  font-weight: 800;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
 }
 
+/* Proportional positioning for numbers */
 .twelve {
-  top: 0.625rem;
-  /*10px;*/
-  left: 46%;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .one {
@@ -104,42 +110,45 @@ code {
   right: 10%;
 }
 
-.three {
-  right: 10px;
-  top: 46%;
-}
-
-.four {
-  right: 30px;
-  top: 67%;
-}
-
-.five {
-  right: 78px;
-  top: 80%;
-}
-
-.six {
-  bottom: 10px;
-  left: 50%;
-}
-
-.seven {
-  left: 80px;
-  top: 82%;
-}
-
-.eight {
-  left: 30px;
-  top: 67%;
-}
-
-.nine {
-  left: 10px;
-  top: 46%;
-}
-
 .ten {
   top: 25%;
   left: 10%;
+}
+
+.three {
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%);
+}
+
+.nine {
+  top: 50%;
+  left: 2%;
+  transform: translateY(-50%);
+}
+
+.four {
+  bottom: 25%;
+  right: 10%;
+}
+
+.eight {
+  bottom: 25%;
+  left: 10%;
+}
+
+.five {
+  bottom: 10%;
+  right: 26%;
+}
+
+.seven {
+  bottom: 10%;
+  left: 26%;
+}
+
+.six {
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
 }
