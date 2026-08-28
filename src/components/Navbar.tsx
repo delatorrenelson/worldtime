@@ -33,7 +33,7 @@ export default function Navbar() {
           <path d="M 275 170 Q 380 170 448 202" />
           <path d="M 275 342 Q 380 342 448 310" />
         </svg>
-        <h1 className="font-bold text-xl stats-title">World Time</h1>
+        <h1 className="font-bold text-xl stats-title">WorldTime</h1>
       </div>
       <TemplateSelectorModal />
       <SizeToggler />
