@@ -338,27 +338,24 @@ export default function Clock({
             <img
               src={getFlagUrl(timezone)!}
               alt={`${timezone} flag`}
-              className="w-7 h-5 object-cover rounded shadow-sm border border-base-300/60 inline-block align-middle"
+              className="h-7 w-auto aspect-[4/3] object-cover rounded shadow-sm border border-base-300/60 inline-block align-middle"
               loading="lazy"
               onError={(e) => {
                 (e.target as HTMLElement).style.display = "none";
               }}
             />
           ) : (
-            <span className="text-xl inline-block align-middle">{getFlagEmoji(timezone)}</span>
+            <span className="text-2xl sm:text-3xl inline-block align-middle">{getFlagEmoji(timezone)}</span>
           )}
           <p className="text-3xl font-semibold text-center">{timezone}</p>
-          {timezone === LOCAL_TIMEZONE && (
-            <span className="badge badge-primary badge-sm">Local</span>
-          )}
         </div>
-        {getTimeDiffString(timezone) && (
-          <div className="mt-1">
-            <span className="text-sm font-bold tracking-wide text-primary-content bg-primary/90 px-3.5 py-1 rounded-full shadow-sm border border-primary/20 inline-block">
-              {getTimeDiffString(timezone)}
-            </span>
-          </div>
-        )}
+        <div className="mt-1">
+          <span className="text-sm font-bold tracking-wide text-primary-content bg-primary/90 px-3.5 py-1 rounded-full shadow-sm border border-primary/20 inline-block">
+            {timezone === LOCAL_TIMEZONE
+              ? "YOUR LOCAL TIME ZONE"
+              : getTimeDiffString(timezone)}
+          </span>
+        </div>
       </div>
       <button
         className="btn-xs btn-error btn-ghost cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
