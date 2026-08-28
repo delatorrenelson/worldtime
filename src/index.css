@@ -14,6 +14,8 @@ code {
 
 .clock {
   --clock-size: 18.75rem;
+  --number-radius: 0.36;
+  --tick-radius: 0.465;
   width: var(--clock-size);
   height: var(--clock-size);
   border-radius: 50%;
@@ -25,7 +27,28 @@ code {
   /* Proportional font size */
   color: currentColor;
   text-align: center;
-  border: 4px solid currentColor;
+  border: calc(var(--clock-size) * 0.02) solid currentColor;
+}
+
+.tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: currentColor;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.tick-minute {
+  width: max(1px, calc(var(--clock-size) * 0.006));
+  height: calc(var(--clock-size) * 0.022);
+  opacity: 0.45;
+}
+
+.tick-hour {
+  width: max(2px, calc(var(--clock-size) * 0.012));
+  height: calc(var(--clock-size) * 0.04);
+  opacity: 0.85;
 }
 
 .clock::after {
@@ -86,69 +109,596 @@ code {
   height: 2em;
   line-height: 2em;
   text-align: center;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Proportional positioning for numbers */
-.twelve {
-  top: 2%;
+/* Proportional circular positioning for numbers */
+.twelve { transform: translate(-50%, -50%) rotate(0deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(0deg); }
+.one    { transform: translate(-50%, -50%) rotate(30deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-30deg); }
+.two    { transform: translate(-50%, -50%) rotate(60deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-60deg); }
+.three  { transform: translate(-50%, -50%) rotate(90deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-90deg); }
+.four   { transform: translate(-50%, -50%) rotate(120deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-120deg); }
+.five   { transform: translate(-50%, -50%) rotate(150deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-150deg); }
+.six    { transform: translate(-50%, -50%) rotate(180deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-180deg); }
+.seven  { transform: translate(-50%, -50%) rotate(210deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-210deg); }
+.eight  { transform: translate(-50%, -50%) rotate(240deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-240deg); }
+.nine   { transform: translate(-50%, -50%) rotate(270deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-270deg); }
+.ten    { transform: translate(-50%, -50%) rotate(300deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-300deg); }
+.eleven { transform: translate(-50%, -50%) rotate(330deg) translateY(calc(-1 * var(--number-radius) * var(--clock-size))) rotate(-330deg); }
+
+/* ============================================================
+   ANALOG CLOCK TEMPLATES & CUSTOM HAND TICKERS
+   ============================================================ */
+
+/* 1. Railway / Sapling Template (Image 2) */
+.clock.tmpl-railway {
+  border: calc(var(--clock-size) * 0.025) solid #222222;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+.clock.tmpl-railway .tick-hour {
+  width: max(2.5px, calc(var(--clock-size) * 0.015));
+  height: calc(var(--clock-size) * 0.05);
+  background: #111;
+  opacity: 1;
+}
+.clock.tmpl-railway .tick-minute {
+  width: max(1px, calc(var(--clock-size) * 0.007));
+  height: calc(var(--clock-size) * 0.025);
+  background: #222;
+  opacity: 0.7;
+}
+.clock.tmpl-railway .hour_hand {
+  width: 3.2%;
+  height: 28%;
+  top: 22%;
+  background: #111111;
+  border-radius: 1px;
+}
+.clock.tmpl-railway .min_hand {
+  width: 2%;
+  height: 38%;
+  top: 12%;
+  background: #111111;
+  border-radius: 1px;
+}
+.clock.tmpl-railway .sec_hand {
+  background: #d32f2f;
+  width: 1.5%;
+  top: 5%;
+  height: 45%;
+}
+/* Swiss Railway iconic hollow red circle loop near second hand tip */
+.clock.tmpl-railway .sec_hand::after {
+  content: "";
+  position: absolute;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
+  width: calc(var(--clock-size) * 0.045);
+  height: calc(var(--clock-size) * 0.045);
+  border: max(2px, calc(var(--clock-size) * 0.008)) solid #d32f2f;
+  border-radius: 50%;
+  background: transparent;
 }
 
-.one {
+/* 2. Dotted Rim Template (Image 1) */
+.clock.tmpl-dotted {
+  border: calc(var(--clock-size) * 0.03) solid #1a1a1a;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+.clock.tmpl-dotted::before {
+  content: "";
+  position: absolute;
+  top: 3.5%;
+  left: 3.5%;
+  right: 3.5%;
+  bottom: 3.5%;
+  border: 1.5px solid #444;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.clock.tmpl-dotted .tick-minute {
+  width: max(2px, calc(var(--clock-size) * 0.012));
+  height: max(2px, calc(var(--clock-size) * 0.012));
+  border-radius: 50%;
+  background: #111;
+  opacity: 0.65;
+}
+.clock.tmpl-dotted .tick-hour {
+  width: max(2.5px, calc(var(--clock-size) * 0.012));
+  height: calc(var(--clock-size) * 0.038);
+  background: #111;
+  opacity: 0.9;
+}
+.clock.tmpl-dotted .hour_hand {
+  width: 2.8%;
+  height: 26%;
+  top: 24%;
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+.clock.tmpl-dotted .min_hand {
+  width: 1.8%;
+  height: 37%;
+  top: 13%;
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+.clock.tmpl-dotted .sec_hand {
+  background: #e53935;
+  width: 1.2%;
+}
+
+/* 3. Luminous Tactical Template (Image 3) */
+.clock.tmpl-tactical {
+  border: calc(var(--clock-size) * 0.025) solid #0f172a;
+  background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+  color: #f8fafc;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+.clock.tmpl-tactical .hour_hand {
+  width: 3.5%;
+  height: 27%;
+  top: 23%;
+  background: #0f172a;
+  border: 1.5px solid #4ade80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+  border-radius: 3px;
+}
+.clock.tmpl-tactical .hour_hand::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  right: 20%;
+  bottom: 15%;
+  background: #4ade80;
+  border-radius: 2px;
+  box-shadow: 0 0 6px #4ade80;
+}
+.clock.tmpl-tactical .min_hand {
+  width: 2.5%;
+  height: 38%;
+  top: 12%;
+  background: #0f172a;
+  border: 1.5px solid #4ade80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+  border-radius: 3px;
+}
+.clock.tmpl-tactical .min_hand::after {
+  content: "";
+  position: absolute;
   top: 10%;
-  right: 26%;
-}
-
-.eleven {
-  top: 10%;
-  left: 26%;
-}
-
-.two {
-  top: 25%;
-  right: 10%;
-}
-
-.ten {
-  top: 25%;
-  left: 10%;
-}
-
-.three {
-  top: 50%;
-  right: 2%;
-  transform: translateY(-50%);
-}
-
-.nine {
-  top: 50%;
-  left: 2%;
-  transform: translateY(-50%);
-}
-
-.four {
-  bottom: 25%;
-  right: 10%;
-}
-
-.eight {
-  bottom: 25%;
-  left: 10%;
-}
-
-.five {
+  left: 20%;
+  right: 20%;
   bottom: 10%;
-  right: 26%;
+  background: #4ade80;
+  border-radius: 2px;
+  box-shadow: 0 0 6px #4ade80;
+}
+.clock.tmpl-tactical .sec_hand {
+  background: #ef4444;
+  width: 1.2%;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+}
+.clock.tmpl-tactical .tick-hour {
+  background: #4ade80;
+  box-shadow: 0 0 4px #4ade80;
+  opacity: 1;
 }
 
-.seven {
-  bottom: 10%;
-  left: 26%;
+/* 4. Minimalist Nordic Template (Image 4) */
+.clock.tmpl-nordic {
+  border: calc(var(--clock-size) * 0.02) solid #e2e8f0;
+  background: #fafaf9;
+  color: #334155;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+.clock.tmpl-nordic span {
+  font-weight: 500;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+.clock.tmpl-nordic .hour_hand {
+  width: 2%;
+  height: 27%;
+  top: 23%;
+  background: #334155;
+  border-radius: 10px;
+}
+.clock.tmpl-nordic .min_hand {
+  width: 1.2%;
+  height: 37%;
+  top: 13%;
+  background: #334155;
+  border-radius: 10px;
+}
+.clock.tmpl-nordic .sec_hand {
+  background: #64748b;
+  width: 1%;
 }
 
-.six {
-  bottom: 2%;
+/* 5. Vintage Roman Template */
+.clock.tmpl-roman {
+  border: calc(var(--clock-size) * 0.03) solid #78350f;
+  background: radial-gradient(circle, #fef3c7 0%, #fde68a 100%);
+  color: #451a03;
+  box-shadow: inset 0 0 20px rgba(120, 53, 15, 0.2), 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+.clock.tmpl-roman span {
+  font-family: 'Times New Roman', Georgia, serif;
+  font-weight: 700;
+}
+.clock.tmpl-roman .hour_hand {
+  width: 3%;
+  height: 25%;
+  top: 25%;
+  background: #451a03;
+  border-radius: 50% 50% 2px 2px;
+}
+.clock.tmpl-roman .hour_hand::after {
+  content: "";
+  position: absolute;
+  top: -15%;
   left: 50%;
   transform: translateX(-50%);
+  width: calc(var(--clock-size) * 0.035);
+  height: calc(var(--clock-size) * 0.035);
+  background: #451a03;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.clock.tmpl-roman .min_hand {
+  width: 2%;
+  height: 37%;
+  top: 13%;
+  background: #451a03;
+  border-radius: 50% 50% 2px 2px;
+}
+.clock.tmpl-roman .sec_hand {
+  background: #b45309;
+  width: 1.2%;
+}
+
+/* 6. Cyber Neon Template */
+.clock.tmpl-neon {
+  border: calc(var(--clock-size) * 0.02) solid #06b6d4;
+  background: #030712;
+  color: #06b6d4;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.3), inset 0 0 15px rgba(6, 182, 212, 0.2);
+}
+.clock.tmpl-neon .hour_hand {
+  width: 2.8%;
+  height: 27%;
+  top: 23%;
+  background: #06b6d4;
+  box-shadow: 0 0 12px #06b6d4, 0 0 20px #06b6d4;
+  border-radius: 4px;
+}
+.clock.tmpl-neon .min_hand {
+  width: 1.8%;
+  height: 38%;
+  top: 12%;
+  background: #38bdf8;
+  box-shadow: 0 0 12px #38bdf8, 0 0 20px #38bdf8;
+  border-radius: 4px;
+}
+.clock.tmpl-neon .sec_hand {
+  width: 1.2%;
+  background: #ec4899;
+  box-shadow: 0 0 14px #ec4899, 0 0 22px #ec4899;
+}
+.clock.tmpl-neon .tick {
+  background: #06b6d4;
+  box-shadow: 0 0 4px #06b6d4;
+}
+
+/* 7. Kids Playful Colorful Template */
+.clock.tmpl-kids {
+  border: calc(var(--clock-size) * 0.035) solid #0284c7;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 10px 30px rgba(2, 132, 199, 0.2);
+}
+.clock.tmpl-kids .twelve { color: #ef4444; }
+.clock.tmpl-kids .one    { color: #f97316; }
+.clock.tmpl-kids .two    { color: #f59e0b; }
+.clock.tmpl-kids .three  { color: #10b981; }
+.clock.tmpl-kids .four   { color: #06b6d4; }
+.clock.tmpl-kids .five   { color: #3b82f6; }
+.clock.tmpl-kids .six    { color: #6366f1; }
+.clock.tmpl-kids .seven  { color: #8b5cf6; }
+.clock.tmpl-kids .eight  { color: #d946ef; }
+.clock.tmpl-kids .nine   { color: #ec4899; }
+.clock.tmpl-kids .ten    { color: #f43f5e; }
+.clock.tmpl-kids .eleven { color: #14b8a6; }
+.clock.tmpl-kids .hour_hand {
+  width: 3.5%;
+  height: 25%;
+  top: 25%;
+  background: #3b82f6;
+  border-radius: 8px;
+}
+.clock.tmpl-kids .min_hand {
+  width: 2.5%;
+  height: 36%;
+  top: 14%;
+  background: #10b981;
+  border-radius: 8px;
+}
+.clock.tmpl-kids .sec_hand {
+  background: #ef4444;
+  width: 1.5%;
+}
+
+/* 8. Dual Dial + LCD Screen Template */
+.clock.tmpl-seiko-combo {
+  border: calc(var(--clock-size) * 0.025) solid #334155;
+  background: radial-gradient(circle, #ffffff 0%, #f1f5f9 100%);
+  color: #0f172a;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+.clock.tmpl-seiko-combo .hour_hand {
+  width: 3%;
+  height: 27%;
+  top: 23%;
+  background: #1e293b;
+  border-radius: 2px;
+}
+.clock.tmpl-seiko-combo .hour_hand::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  left: 30%;
+  right: 30%;
+  background: #ffffff;
+  border-radius: 1px;
+}
+.clock.tmpl-seiko-combo .min_hand {
+  width: 2%;
+  height: 37%;
+  top: 13%;
+  background: #1e293b;
+  border-radius: 2px;
+}
+.clock.tmpl-seiko-combo .min_hand::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 30%;
+  right: 30%;
+  background: #ffffff;
+  border-radius: 1px;
+}
+.clock.tmpl-seiko-combo .sec_hand {
+  background: #2563eb;
+  width: 1.2%;
+}
+
+/* 9. 24-Hour Military Template */
+.clock.tmpl-military-24h {
+  border: calc(var(--clock-size) * 0.025) solid #292524;
+  background: #f5f5f4;
+  color: #1c1917;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+.clock.tmpl-military-24h .hour_hand {
+  width: 3%;
+  height: 25%;
+  top: 25%;
+  background: #1c1917;
+  border-radius: 2px;
+}
+.clock.tmpl-military-24h .min_hand {
+  width: 2%;
+  height: 37%;
+  top: 13%;
+  background: #1c1917;
+  border-radius: 2px;
+}
+.clock.tmpl-military-24h .sec_hand {
+  background: #dc2626;
+  width: 1.2%;
+}
+
+/* 10. Industrial Metal Skeletal Cutout Template */
+.clock.tmpl-skeleton-metal {
+  border: calc(var(--clock-size) * 0.04) solid #18181b;
+  background: radial-gradient(circle, #27272a 0%, #09090b 100%);
+  color: #e4e4e7;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+.clock.tmpl-skeleton-metal span {
+  color: #eab308;
+  font-family: 'Times New Roman', Georgia, serif;
+}
+.clock.tmpl-skeleton-metal .hour_hand {
+  width: 3.5%;
+  height: 26%;
+  top: 24%;
+  background: #eab308;
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+  border-radius: 4px;
+}
+.clock.tmpl-skeleton-metal .min_hand {
+  width: 2.2%;
+  height: 37%;
+  top: 13%;
+  background: #eab308;
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+  border-radius: 4px;
+}
+.clock.tmpl-skeleton-metal .sec_hand {
+  background: #f97316;
+  width: 1.2%;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.6);
+}
+
+/* 11. Matte Black Wall Template */
+.clock.tmpl-dark-wall {
+  border: calc(var(--clock-size) * 0.025) solid #18181b;
+  background: #18181b;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+.clock.tmpl-dark-wall .hour_hand {
+  width: 3%;
+  height: 27%;
+  top: 23%;
+  background: #ffffff;
+  border-radius: 2px;
+}
+.clock.tmpl-dark-wall .min_hand {
+  width: 2%;
+  height: 37%;
+  top: 13%;
+  background: #ffffff;
+  border-radius: 2px;
+}
+.clock.tmpl-dark-wall .sec_hand {
+  background: #ef4444;
+  width: 1.2%;
+}
+.clock.tmpl-dark-wall .tick {
+  background: #ffffff;
+}
+
+/* 12. Rustic Walnut Wood Template */
+.clock.tmpl-wooden-rustic {
+  border: calc(var(--clock-size) * 0.04) solid #451a03;
+  background: radial-gradient(circle, #fef3c7 0%, #fde68a 100%);
+  color: #291002;
+  box-shadow: 0 12px 30px rgba(69, 26, 3, 0.3), inset 0 0 15px rgba(69, 26, 3, 0.2);
+}
+.clock.tmpl-wooden-rustic .hour_hand {
+  width: 3.2%;
+  height: 25%;
+  top: 25%;
+  background: #291002;
+  border-radius: 50% 50% 2px 2px;
+}
+.clock.tmpl-wooden-rustic .min_hand {
+  width: 2.2%;
+  height: 36%;
+  top: 14%;
+  background: #291002;
+  border-radius: 50% 50% 2px 2px;
+}
+.clock.tmpl-wooden-rustic .sec_hand {
+  background: #b45309;
+  width: 1.2%;
+}
+
+/* ============================================================
+   TIMEZONE TEXT STYLES (MATCHING ACTIVE CLOCK TEMPLATE)
+   ============================================================ */
+#timezone.tz-tmpl-digital-led p {
+  font-family: 'Courier New', monospace;
+  color: #22c55e;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+}
+
+#timezone.tz-tmpl-digital-cyber p,
+#timezone.tz-tmpl-neon p {
+  font-family: 'Courier New', monospace;
+  color: #06b6d4;
+  text-shadow: 0 0 12px #06b6d4, 0 0 20px #ec4899;
+}
+
+#timezone.tz-tmpl-digital-alarm p {
+  font-family: 'Courier New', monospace;
+  color: #ef4444;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+}
+
+#timezone.tz-tmpl-digital-vfd p {
+  font-family: 'Courier New', monospace;
+  color: #06b6d4;
+  text-shadow: 0 0 12px rgba(6, 182, 212, 0.8);
+}
+
+#timezone.tz-tmpl-digital-3d-led p {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6);
+  font-weight: 700;
+}
+
+#timezone.tz-tmpl-digital-rgb p {
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #06b6d4, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+#timezone.tz-tmpl-digital-weather p {
+  font-family: system-ui, sans-serif;
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+}
+
+#timezone.tz-tmpl-digital-pastel p {
+  color: #ec4899;
+  font-weight: 700;
+}
+
+#timezone.tz-tmpl-digital-nixie p {
+  font-family: Georgia, serif;
+  color: #f97316;
+  text-shadow: 0 0 12px #f97316, 0 0 20px #ef4444;
+}
+
+#timezone.tz-tmpl-digital-matrix p {
+  font-family: monospace;
+  color: #22c55e;
+  text-shadow: 0 0 8px #22c55e;
+}
+
+#timezone.tz-tmpl-roman p,
+#timezone.tz-tmpl-skeleton-metal p {
+  font-family: 'Times New Roman', Georgia, serif;
+  color: #eab308;
+  text-shadow: 0 0 8px rgba(234, 179, 8, 0.4);
+  font-weight: 700;
+}
+
+#timezone.tz-tmpl-tactical p {
+  font-family: system-ui, sans-serif;
+  color: #4ade80;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+  font-weight: 700;
+}
+
+#timezone.tz-tmpl-kids p {
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+#timezone.tz-tmpl-wooden-rustic p {
+  font-family: 'Times New Roman', Georgia, serif;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+#timezone.tz-tmpl-railway p {
+  font-family: system-ui, sans-serif;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+#timezone.tz-tmpl-military-24h p {
+  font-family: monospace;
+  font-weight: 700;
+  color: #a8a29e;
 }

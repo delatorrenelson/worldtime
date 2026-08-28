@@ -1,5 +1,5 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { addTimeZone, clearTimeZones, removeTimeZone, toggleTimeZone, setClockSize } from '../features/timeZone/timeZoneSlice';
+import { addTimeZone, clearTimeZones, removeTimeZone, toggleTimeZone, setClockSize, reorderTimeZones } from '../features/timeZone/timeZoneSlice';
 import type { RootState } from './index';
 
 export const listenerMiddleware = createListenerMiddleware();
@@ -11,6 +11,7 @@ listenerMiddleware.startListening({
         toggleTimeZone,
         clearTimeZones,
         setClockSize,
+        reorderTimeZones,
     ),
     effect: (_action, listenerApi) => {
         const state = listenerApi.getState() as RootState;
