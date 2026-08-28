@@ -184,11 +184,13 @@ export default function Clock({
       onDrop={(e) => onDrop?.(e, index)}
       onDragEnd={onDragEnd}
       id="clock"
-      className={`card group content-center gap-1 items-center min-w-[20%] bg-base-100 p-4 relative cursor-grab active:cursor-grabbing transition-all duration-200 border-2 select-none ${isDragging ? "opacity-30 scale-95 border-dashed border-primary" : ""
-        } ${isDragOver
-          ? "border-primary ring-2 ring-primary ring-offset-2 scale-[1.03]"
-          : "border-transparent"
-        }`}
+      className={`card group content-center gap-1 items-center min-w-[20%] bg-base-100 p-4 relative cursor-grab active:cursor-grabbing transition-all duration-300 border-2 select-none ${
+        isDragging
+          ? "opacity-30 scale-95 border-dashed border-primary shadow-inner"
+          : isDragOver
+          ? "border-primary ring-2 ring-primary/40 scale-[1.02] shadow-xl"
+          : "border-transparent hover:border-base-300"
+      }`}
     >
       {/* Settings / Controls overlay dropdown button */}
       <div

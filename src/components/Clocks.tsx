@@ -19,6 +19,10 @@ function Clocks() {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
+    if (draggedIndex !== null && draggedIndex !== index) {
+      dispatch(reorderTimeZones({ sourceIndex: draggedIndex, destinationIndex: index }));
+      setDraggedIndex(index);
+    }
     if (dragOverIndex !== index) {
       setDragOverIndex(index);
     }
@@ -30,11 +34,8 @@ function Clocks() {
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, _targetIndex: number) => {
     e.preventDefault();
-    if (draggedIndex !== null && draggedIndex !== targetIndex) {
-      dispatch(reorderTimeZones({ sourceIndex: draggedIndex, destinationIndex: targetIndex }));
-    }
     setDraggedIndex(null);
     setDragOverIndex(null);
   };
