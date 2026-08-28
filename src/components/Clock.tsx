@@ -22,8 +22,8 @@ export interface ClockProps {
   onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const TICKS = Array.from({ length: 60 }, (_, i) => i);
-const STANDARD_NUMBERS = [
+export const TICKS = Array.from({ length: 60 }, (_, i) => i);
+export const STANDARD_NUMBERS = [
   { class: "twelve", label: "12" },
   { class: "one", label: "1" },
   { class: "two", label: "2" },
@@ -38,7 +38,7 @@ const STANDARD_NUMBERS = [
   { class: "eleven", label: "11" },
 ];
 
-const ROMAN_NUMBERS = [
+export const ROMAN_NUMBERS = [
   { class: "twelve", label: "XII" },
   { class: "one", label: "I" },
   { class: "two", label: "II" },
@@ -52,6 +52,34 @@ const ROMAN_NUMBERS = [
   { class: "ten", label: "X" },
   { class: "eleven", label: "XI" },
 ];
+
+export function getTimeDiffString(targetTimezone: string): string {
+  const localOffsetMinutes = moment().tz(LOCAL_TIMEZONE).utcOffset();
+  const targetOffsetMinutes = moment().tz(targetTimezone).utcOffset();
+  const diffMinutes = targetOffsetMinutes - localOffsetMinutes;
+
+  if (diffMinutes === 0) {
+    return "Same time as your local time";
+  }
+
+  const isEarly = diffMinutes > 0;
+  const absDiff = Math.abs(diffMinutes);
+  const hours = Math.floor(absDiff / 60);
+  const minutes = absDiff % 60;
+
+  const parts: string[] = [];
+  if (hours > 0) {
+    parts.push(`${hours} ${hours === 1 ? "hour" : "hours"}`);
+  }
+  if (minutes > 0) {
+    parts.push(`${minutes} ${minutes === 1 ? "minute" : "minutes"}`);
+  }
+
+  const durationStr = parts.join(" ");
+  const directionStr = isEarly ? "early from your local time" : "late from your local time";
+
+  return `${durationStr} ${directionStr}`;
+}
 
 export default function Clock({
   clock,
@@ -299,11 +327,16 @@ export default function Clock({
         )}
       </figure>
 
-      <div id="timezone" className={`flex items-center gap-2 tz-tmpl-${template}`}>
-        <p className="text-3xl font-semibold text-center">{timezone}</p>
-        {timezone === LOCAL_TIMEZONE && (
-          <span className="badge badge-primary badge-sm">Local</span>
-        )}
+      <div id="timezone" className={`flex flex-col items-center gap-1 tz-tmpl-${template}`}>
+        <div className="flex items-center gap-2">
+          <p className="text-3xl font-semibold text-center">{timezone}</p>
+          {timezone === LOCAL_TIMEZONE && (
+            <span className="badge badge-primary badge-sm">Local</span>
+          )}
+        </div>
+        <p className="text-xs font-semibold tracking-wide opacity-80 text-center">
+          {getTimeDiffString(timezone)}
+        </p>
       </div>
       <button
         className="btn-xs btn-error btn-ghost cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -321,7 +354,7 @@ export default function Clock({
 }
 
 /* Digital Clock Template Helper Component */
-function DigitalDisplay({
+export function DigitalDisplay({
   template,
   time12,
   secondsStr,

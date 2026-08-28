@@ -6,6 +6,12 @@ import {
   setGlobalDigitalTemplate,
 } from "../features/timeZone/timeZoneSlice";
 import { ANALOG_TEMPLATES, DIGITAL_TEMPLATES } from "../utils/clockTemplates";
+import {
+  TICKS,
+  STANDARD_NUMBERS,
+  ROMAN_NUMBERS,
+  DigitalDisplay,
+} from "./Clock";
 
 export default function TemplateSelectorModal() {
   const dispatch = useAppDispatch();
@@ -132,47 +138,59 @@ export default function TemplateSelectorModal() {
                         )}
                       </div>
 
-                      {/* Visual Preview */}
-                      <div className="w-full h-32 rounded-xl bg-base-200/50 flex items-center justify-center p-3 my-2 border border-base-300 relative overflow-hidden">
+                      {/* Visual Analog Thumbnail - Matches Exact Clock Design */}
+                      <div className="w-full h-32 rounded-xl bg-base-200/40 flex items-center justify-center p-2 my-2 border border-base-300/80 relative overflow-hidden">
                         <div
-                          className={`w-24 h-24 rounded-full border-2 border-current relative flex items-center justify-center shadow-inner ${tmpl.previewBg}`}
-                          style={{
-                            color:
-                              tmpl.previewBg.includes("slate-9") ||
-                              tmpl.previewBg.includes("black") ||
-                              tmpl.previewBg.includes("zinc-9") ||
-                              tmpl.previewBg.includes("amber-950")
-                                ? "#f8fafc"
-                                : "#0f172a",
-                          }}
+                          className={`clock outline tmpl-${tmpl.id} pointer-events-none shadow-md`}
+                          style={{ "--clock-size": "96px" } as React.CSSProperties}
                         >
-                          <span className="absolute top-1 text-[10px] font-bold">
-                            12
-                          </span>
-                          <span className="absolute right-1 text-[10px] font-bold">
-                            3
-                          </span>
-                          <span className="absolute bottom-1 text-[10px] font-bold">
-                            6
-                          </span>
-                          <span className="absolute left-1 text-[10px] font-bold">
-                            9
-                          </span>
-                          {/* Hour hand */}
-                          <div
-                            className="absolute w-[2px] h-6 bg-current top-[22px] left-[47px] origin-bottom rounded"
-                            style={{ transform: "rotate(45deg)" }}
-                          />
-                          {/* Min hand */}
-                          <div
-                            className="absolute w-[2px] h-8 bg-current top-[14px] left-[47px] origin-bottom rounded"
-                            style={{ transform: "rotate(135deg)" }}
-                          />
-                          {/* Center dot */}
-                          <div
-                            className="absolute w-2 h-2 rounded-full z-10"
-                            style={{ backgroundColor: tmpl.previewAccent }}
-                          />
+                          <div className="hour_hand" style={{ transform: "rotateZ(315deg)" }} />
+                          <div className="min_hand" style={{ transform: "rotateZ(120deg)" }} />
+                          <div className="sec_hand" style={{ transform: "rotateZ(210deg)" }} />
+
+                          {tmpl.id === "seiko-combo" && (
+                            <div className="absolute bottom-[26%] left-1/2 -translate-x-1/2 bg-slate-100 border border-slate-400 text-slate-900 px-1 py-0.5 rounded text-[7px] font-mono font-bold z-10">
+                              FRI, AUG 28
+                            </div>
+                          )}
+
+                          {tmpl.id === "military-24h" && (
+                            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                              <div className="w-[62%] h-[62%] rounded-full border border-dashed border-stone-400/40 relative">
+                                {[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((num, idx) => (
+                                  <span
+                                    key={num}
+                                    className="absolute text-[6px] font-bold text-stone-500"
+                                    style={{
+                                      top: "50%",
+                                      left: "50%",
+                                      fontSize: "calc(96px * 0.048)",
+                                      transform: `translate(-50%, -50%) rotate(${idx * 30 + 30}deg) translateY(calc(-1 * 0.25 * 96px)) rotate(-${idx * 30 + 30}deg)`,
+                                    }}
+                                  >
+                                    {num}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Minute Ticks */}
+                          {TICKS.map((i) => (
+                            <div
+                              key={`tick-${i}`}
+                              className={`tick ${i % 5 === 0 ? "tick-hour" : "tick-minute"}`}
+                              style={{
+                                transform: `translate(-50%, -50%) rotate(${i * 6}deg) translateY(calc(-1 * var(--tick-radius) * 96px))`,
+                              }}
+                            />
+                          ))}
+
+                          {(tmpl.id === "roman" ? ROMAN_NUMBERS : STANDARD_NUMBERS).map((num) => (
+                            <span key={num.class} className={num.class}>
+                              {num.label}
+                            </span>
+                          ))}
                         </div>
                       </div>
 
@@ -205,20 +223,23 @@ export default function TemplateSelectorModal() {
                         )}
                       </div>
 
-                      {/* Visual Digital Preview */}
-                      <div className="w-full h-32 rounded-xl bg-base-200/50 flex items-center justify-center p-3 my-2 border border-base-300 relative overflow-hidden">
+                      {/* Visual Digital Thumbnail - Matches Exact Digital Design */}
+                      <div className="w-full h-32 rounded-xl bg-base-200/40 flex items-center justify-center p-2 my-2 border border-base-300/80 relative overflow-hidden">
                         <div
-                          className={`w-full h-20 rounded-xl flex flex-col items-center justify-center border border-white/10 ${tmpl.previewBg}`}
+                          className="flex items-center justify-center overflow-hidden rounded-2xl pointer-events-none"
+                          style={{
+                            width: "115px",
+                            height: "115px",
+                            "--clock-size": "115px",
+                          } as React.CSSProperties}
                         >
-                          <span
-                            className="text-2xl font-mono font-bold tracking-wider"
-                            style={{ color: tmpl.previewAccent }}
-                          >
-                            10:24:38
-                          </span>
-                          <span className="text-[10px] uppercase font-semibold text-base-content/60 mt-1">
-                            PM • LOCAL TIME
-                          </span>
+                          <DigitalDisplay
+                            template={tmpl.id}
+                            time12="10:24"
+                            secondsStr="38"
+                            ampm="PM"
+                            dayStr="FRI, AUG 28"
+                          />
                         </div>
                       </div>
 
