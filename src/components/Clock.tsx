@@ -115,6 +115,20 @@ export default function Clock({
   const [ampm, setAmpm] = useState("AM");
   const [dayStr, setDayStr] = useState("");
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(`#clock-options-${index}`)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen, index]);
+
   const { timezone } = clock;
 
   const displayType = clock.displayType || globalDisplayType || "analog";
@@ -175,34 +189,43 @@ export default function Clock({
           : "border-transparent"
         }`}
     >
-      {/* Settings / Controls overlay dropdown */}
-      <div className="absolute top-3 right-3 z-20 flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
-        <div className="dropdown dropdown-end">
-          <label
-            tabIndex={0}
-            className="btn btn-circle btn-sm bg-base-200/90 hover:bg-base-300 border border-base-300/80 shadow-md text-base-content/80 hover:text-base-content cursor-pointer transition-all duration-200 hover:scale-105"
-            title="Clock Options"
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
+      {/* Settings / Controls overlay dropdown button */}
+      <div
+        id={`clock-options-${index}`}
+        className={`absolute top-3 right-3 z-30 transition-opacity duration-200 ${
+          isMenuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+        }`}
+      >
+        <button
+          type="button"
+          className="btn btn-circle btn-sm bg-base-200/90 hover:bg-base-300 border border-base-300/80 shadow-md text-base-content/80 hover:text-base-content cursor-pointer transition-all duration-200 hover:scale-105"
+          title="Clock Options"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMenuOpen((prev) => !prev);
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-4 h-4"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
-              />
-            </svg>
-          </label>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+            />
+          </svg>
+        </button>
+
+        {isMenuOpen && (
           <div
-            tabIndex={0}
-            className="dropdown-content z-30 shadow-2xl bg-base-100 rounded-2xl w-56 border border-base-300 text-xs p-2 flex flex-col gap-1 overflow-hidden"
+            className="absolute right-0 top-9 z-40 shadow-2xl bg-base-100 rounded-2xl w-56 border border-base-300 text-xs p-2 flex flex-col gap-1 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="p-1 border-b border-base-200 pb-2">
@@ -233,10 +256,11 @@ export default function Clock({
               ).map((tmpl) => (
                 <button
                   key={tmpl.id}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between ${template === tmpl.id
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between ${
+                    template === tmpl.id
                       ? "bg-primary text-primary-content font-bold shadow-sm"
                       : "hover:bg-base-200 text-base-content/80"
-                    }`}
+                  }`}
                   onClick={() =>
                     dispatch(setClockTemplate({ index, template: tmpl.id }))
                   }
@@ -252,7 +276,10 @@ export default function Clock({
             <div className="border-t border-base-200 pt-2 mt-1 px-1">
               <button
                 className="btn btn-sm btn-error text-error-content w-full gap-1.5 font-bold text-xs shadow-sm"
-                onClick={() => dispatch(removeTimeZone(clock))}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  dispatch(removeTimeZone(clock));
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +299,7 @@ export default function Clock({
               </button>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <figure className="p-6">
