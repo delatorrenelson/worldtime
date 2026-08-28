@@ -1,6 +1,6 @@
 # World Time 🌐
 
-> An elegant, feature-rich global time viewer app featuring 25 curated analog & digital clock designs, customizable themes, and drag-and-drop timezone tracking.
+> An elegant, feature-rich global time viewer app featuring few curated analog & digital clock designs, customizable themes, and drag-and-drop timezone tracking.
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-18-blue.svg)
