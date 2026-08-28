@@ -200,14 +200,14 @@ export default function Clock({
               />
             </svg>
           </label>
-          <ul
+          <div
             tabIndex={0}
-            className="dropdown-content z-30 menu p-2 shadow-xl bg-base-100 rounded-box w-52 border border-base-200 text-xs gap-1"
+            className="dropdown-content z-30 shadow-2xl bg-base-100 rounded-2xl w-56 border border-base-300 text-xs p-2 flex flex-col gap-1 overflow-hidden"
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <li>
+            <div className="p-1 border-b border-base-200 pb-2">
               <button
-                className="py-2 font-semibold flex items-center justify-between"
+                className="btn btn-sm btn-ghost w-full justify-between font-semibold text-xs"
                 onClick={() => {
                   const nextMode = displayType === "analog" ? "digital" : "analog";
                   dispatch(
@@ -220,27 +220,59 @@ export default function Clock({
                   {displayType}
                 </span>
               </button>
-            </li>
+            </div>
 
-            <li className="menu-title text-base-content/60 font-semibold px-2 py-1 mt-2">
+            <div className="px-2 pt-1 font-bold text-[11px] uppercase tracking-wider text-base-content/60">
               Select Template
-            </li>
-            {(displayType === "analog"
-              ? ANALOG_TEMPLATES
-              : DIGITAL_TEMPLATES
-            ).map((tmpl) => (
-              <li key={tmpl.id}>
+            </div>
+
+            <div className="max-h-48 overflow-y-auto px-1 py-1 flex flex-col gap-0.5">
+              {(displayType === "analog"
+                ? ANALOG_TEMPLATES
+                : DIGITAL_TEMPLATES
+              ).map((tmpl) => (
                 <button
-                  className={`py-1 ${template === tmpl.id ? "active font-bold" : ""}`}
+                  key={tmpl.id}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between ${
+                    template === tmpl.id
+                      ? "bg-primary text-primary-content font-bold shadow-sm"
+                      : "hover:bg-base-200 text-base-content/80"
+                  }`}
                   onClick={() =>
                     dispatch(setClockTemplate({ index, template: tmpl.id }))
                   }
                 >
-                  {tmpl.name}
+                  <span className="truncate">{tmpl.name}</span>
+                  {template === tmpl.id && (
+                    <span className="text-xs">✓</span>
+                  )}
                 </button>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+
+            <div className="border-t border-base-200 pt-2 mt-1 px-1">
+              <button
+                className="btn btn-sm btn-error text-error-content w-full gap-1.5 font-bold text-xs shadow-sm"
+                onClick={() => dispatch(removeTimeZone(clock))}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                  />
+                </svg>
+                <span>Remove Clock</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -258,35 +290,31 @@ export default function Clock({
             />
             <div
               className="min_hand"
-              style={{
-                transform: `rotateZ(${minutes * 6}deg)`,
-              }}
+              style={{ transform: `rotateZ(${minutes * 6}deg)` }}
             />
             <div
               className="sec_hand"
-              style={{
-                transform: `rotateZ(${seconds * 6}deg)`,
-              }}
+              style={{ transform: `rotateZ(${seconds * 6}deg)` }}
             />
-            {/* Special face overlays for Seiko Combo & Military 24h */}
+
             {template === "seiko-combo" && (
-              <div className="absolute bottom-[26%] left-1/2 -translate-x-1/2 bg-slate-100 border border-slate-400 text-slate-900 px-2 py-0.5 rounded text-[10px] font-mono font-bold shadow-inner z-10">
+              <div className="absolute bottom-[26%] left-1/2 -translate-x-1/2 bg-slate-100 border border-slate-400 text-slate-900 px-1 py-0.5 rounded text-[8px] font-mono font-bold z-10">
                 {dayStr}
               </div>
             )}
+
             {template === "military-24h" && (
               <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                 <div className="w-[62%] h-[62%] rounded-full border border-dashed border-stone-400/40 relative">
                   {[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((num, idx) => (
                     <span
                       key={num}
-                      className="absolute text-[9px] font-bold text-stone-500"
+                      className="absolute text-[8px] font-bold text-stone-500"
                       style={{
                         top: "50%",
                         left: "50%",
                         fontSize: "calc(var(--clock-size) * 0.048)",
-                        transform: `translate(-50%, -50%) rotate(${idx * 30 + 30
-                          }deg) translateY(calc(-1 * 0.25 * var(--clock-size))) rotate(-${idx * 30 + 30}deg)`,
+                        transform: `translate(-50%, -50%) rotate(${idx * 30 + 30}deg) translateY(calc(-1 * 0.25 * var(--clock-size))) rotate(-${idx * 30 + 30}deg)`,
                       }}
                     >
                       {num}
@@ -295,7 +323,7 @@ export default function Clock({
                 </div>
               </div>
             )}
-            {/* Minute Ticks */}
+
             {TICKS.map((i) => (
               <div
                 key={`tick-${i}`}
@@ -313,7 +341,6 @@ export default function Clock({
             ))}
           </div>
         ) : (
-          /* Digital Display Container */
           <div
             className="flex items-center justify-center overflow-hidden rounded-2xl"
             style={{
@@ -358,36 +385,10 @@ export default function Clock({
           </span>
         </div>
       </div>
-      <button
-        className="btn btn-xs btn-error text-error-content font-bold shadow-md opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-105 gap-1 mt-1"
-        draggable={false}
-        onMouseDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation();
-          dispatch(removeTimeZone(clock));
-        }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="2"
-          stroke="currentColor"
-          className="w-3.5 h-3.5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-          />
-        </svg>
-        <span>Remove</span>
-      </button>
     </div>
   );
 }
 
-/* Digital Clock Template Helper Component */
 export function DigitalDisplay({
   template,
   time12,
