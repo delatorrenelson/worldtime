@@ -9,6 +9,7 @@ import {
   type TimeZoneInfo,
 } from "../features/timeZone/timeZoneSlice";
 import { ANALOG_TEMPLATES, DIGITAL_TEMPLATES } from "../utils/clockTemplates";
+import { getFlagUrl, getFlagEmoji } from "../utils/timezoneFlags";
 
 export interface ClockProps {
   clock: TimeZoneInfo;
@@ -331,17 +332,32 @@ export default function Clock({
         )}
       </figure>
 
-      <div id="timezone" className={`flex flex-col items-center gap-1 tz-tmpl-${template}`}>
-        <div className="flex items-center gap-2">
+      <div id="timezone" className={`flex flex-col items-center gap-1.5 tz-tmpl-${template}`}>
+        <div className="flex items-center gap-2 flex-wrap justify-center">
+          {getFlagUrl(timezone) ? (
+            <img
+              src={getFlagUrl(timezone)!}
+              alt={`${timezone} flag`}
+              className="w-7 h-5 object-cover rounded shadow-sm border border-base-300/60 inline-block align-middle"
+              loading="lazy"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = "none";
+              }}
+            />
+          ) : (
+            <span className="text-xl inline-block align-middle">{getFlagEmoji(timezone)}</span>
+          )}
           <p className="text-3xl font-semibold text-center">{timezone}</p>
           {timezone === LOCAL_TIMEZONE && (
             <span className="badge badge-primary badge-sm">Local</span>
           )}
         </div>
         {getTimeDiffString(timezone) && (
-          <p className="text-xs font-semibold tracking-wide opacity-80 text-center">
-            {getTimeDiffString(timezone)}
-          </p>
+          <div className="mt-1">
+            <span className="text-sm font-bold tracking-wide text-primary-content bg-primary/90 px-3.5 py-1 rounded-full shadow-sm border border-primary/20 inline-block">
+              {getTimeDiffString(timezone)}
+            </span>
+          </div>
         )}
       </div>
       <button
