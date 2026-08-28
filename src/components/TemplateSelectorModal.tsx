@@ -10,8 +10,8 @@ import {
   TICKS,
   STANDARD_NUMBERS,
   ROMAN_NUMBERS,
-  DigitalDisplay,
 } from "./Clock";
+import { DigitalDisplay } from "./DigitalDisplay";
 
 export default function TemplateSelectorModal() {
   const dispatch = useAppDispatch();
