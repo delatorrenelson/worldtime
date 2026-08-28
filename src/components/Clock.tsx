@@ -168,7 +168,8 @@ export default function Clock({
       onDragLeave={(e) => onDragLeave?.(e, index)}
       onDrop={(e) => onDrop?.(e, index)}
       onDragEnd={onDragEnd}
-      className={`card group content-center gap-4 items-center min-w-[20%] bg-base-100 p-4 relative cursor-grab active:cursor-grabbing transition-all duration-200 border-2 select-none ${isDragging ? "opacity-30 scale-95 border-dashed border-primary" : ""
+      id="clock"
+      className={`card group content-center gap-1 items-center min-w-[20%] bg-base-100 p-4 relative cursor-grab active:cursor-grabbing transition-all duration-200 border-2 select-none ${isDragging ? "opacity-30 scale-95 border-dashed border-primary" : ""
         } ${isDragOver
           ? "border-primary ring-2 ring-primary ring-offset-2 scale-[1.03]"
           : "border-transparent"
@@ -179,7 +180,7 @@ export default function Clock({
         <div className="dropdown dropdown-end">
           <label
             tabIndex={0}
-            className="btn btn-circle btn-ghost btn-xs opacity-60 hover:opacity-100 cursor-pointer"
+            className="btn btn-circle btn-sm bg-base-200/90 hover:bg-base-300 border border-base-300/80 shadow-md text-base-content/80 hover:text-base-content cursor-pointer transition-all duration-200 hover:scale-105"
             title="Clock Options"
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
@@ -188,7 +189,7 @@ export default function Clock({
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="1.5"
+              strokeWidth="2"
               stroke="currentColor"
               className="w-4 h-4"
             >
@@ -358,7 +359,7 @@ export default function Clock({
         </div>
       </div>
       <button
-        className="btn-xs btn-error btn-ghost cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        className="btn btn-xs btn-error text-error-content font-bold shadow-md opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-105 gap-1 mt-1"
         draggable={false}
         onMouseDown={(e) => e.stopPropagation()}
         onClick={(e) => {
@@ -366,7 +367,21 @@ export default function Clock({
           dispatch(removeTimeZone(clock));
         }}
       >
-        Remove
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+          className="w-3.5 h-3.5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+          />
+        </svg>
+        <span>Remove</span>
       </button>
     </div>
   );
