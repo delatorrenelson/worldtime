@@ -54,12 +54,16 @@ export const ROMAN_NUMBERS = [
 ];
 
 export function getTimeDiffString(targetTimezone: string): string {
+  if (targetTimezone === LOCAL_TIMEZONE) {
+    return "";
+  }
+
   const localOffsetMinutes = moment().tz(LOCAL_TIMEZONE).utcOffset();
   const targetOffsetMinutes = moment().tz(targetTimezone).utcOffset();
   const diffMinutes = targetOffsetMinutes - localOffsetMinutes;
 
   if (diffMinutes === 0) {
-    return "Same time as your local time";
+    return "";
   }
 
   const isEarly = diffMinutes > 0;
@@ -69,13 +73,13 @@ export function getTimeDiffString(targetTimezone: string): string {
 
   const parts: string[] = [];
   if (hours > 0) {
-    parts.push(`${hours} ${hours === 1 ? "hour" : "hours"}`);
+    parts.push(`${hours}${hours === 1 ? "hr" : "hrs"}`);
   }
   if (minutes > 0) {
-    parts.push(`${minutes} ${minutes === 1 ? "minute" : "minutes"}`);
+    parts.push(`${minutes}${minutes === 1 ? "min" : "mins"}`);
   }
 
-  const durationStr = parts.join(" ");
+  const durationStr = parts.join(", ");
   const directionStr = isEarly ? "early from your local time" : "late from your local time";
 
   return `${durationStr} ${directionStr}`;
@@ -334,9 +338,11 @@ export default function Clock({
             <span className="badge badge-primary badge-sm">Local</span>
           )}
         </div>
-        <p className="text-xs font-semibold tracking-wide opacity-80 text-center">
-          {getTimeDiffString(timezone)}
-        </p>
+        {getTimeDiffString(timezone) && (
+          <p className="text-xs font-semibold tracking-wide opacity-80 text-center">
+            {getTimeDiffString(timezone)}
+          </p>
+        )}
       </div>
       <button
         className="btn-xs btn-error btn-ghost cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
