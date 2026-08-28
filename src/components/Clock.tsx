@@ -339,22 +339,22 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-slate-950 flex flex-col items-center justify-center border-4 border-slate-800 shadow-md relative overflow-hidden"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'VT323', monospace" }}
         >
           <div
-            className="uppercase font-mono tracking-widest text-emerald-500/70 mb-1"
-            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
+            className="uppercase tracking-widest text-emerald-500/70 mb-1"
+            style={{ fontSize: "calc(var(--clock-size) * 0.055)" }}
           >
             {dayStr}
           </div>
-          <div className="flex items-baseline font-mono text-emerald-400 drop-shadow-[0_0_3px_rgba(52,211,153,0.35)]" style={{ gap: "calc(var(--clock-size) * 0.015)" }}>
-            <span className="font-bold tracking-wider" style={{ fontSize: "calc(var(--clock-size) * 0.17)" }}>{time12}</span>
-            <span className="font-semibold opacity-90" style={{ fontSize: "calc(var(--clock-size) * 0.09)" }}>:{secondsStr}</span>
-            <span className="font-bold text-emerald-300 ml-1" style={{ fontSize: "calc(var(--clock-size) * 0.05)" }}>{ampm}</span>
+          <div className="flex items-baseline text-emerald-400 drop-shadow-[0_0_3px_rgba(52,211,153,0.35)]" style={{ gap: "calc(var(--clock-size) * 0.015)" }}>
+            <span className="font-bold tracking-wider" style={{ fontSize: "calc(var(--clock-size) * 0.22)" }}>{time12}</span>
+            <span className="font-semibold opacity-90" style={{ fontSize: "calc(var(--clock-size) * 0.12)" }}>:{secondsStr}</span>
+            <span className="font-bold text-emerald-300 ml-1" style={{ fontSize: "calc(var(--clock-size) * 0.07)" }}>{ampm}</span>
           </div>
           <div
-            className="mt-2 text-emerald-600/80 tracking-widest font-mono"
-            style={{ fontSize: "calc(var(--clock-size) * 0.038)" }}
+            className="mt-1 text-emerald-600/80 tracking-widest"
+            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
           >
             DIGITAL LED WATCH
           </div>
@@ -365,18 +365,18 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-slate-900 flex flex-col items-center justify-center border border-cyan-500/30 shadow-md relative overflow-hidden"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'Orbitron', sans-serif" }}
         >
           <div
-            className="font-mono tracking-widest text-pink-400 mb-1 uppercase"
-            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
+            className="tracking-widest text-pink-400 mb-1 uppercase"
+            style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}
           >
             // {dayStr}
           </div>
-          <div className="flex items-baseline font-mono text-cyan-400 drop-shadow-[0_0_3px_#06b6d4]" style={{ gap: "calc(var(--clock-size) * 0.015)" }}>
-            <span className="font-extrabold" style={{ fontSize: "calc(var(--clock-size) * 0.17)" }}>{time12}</span>
-            <span className="font-bold text-pink-500" style={{ fontSize: "calc(var(--clock-size) * 0.09)" }}>:{secondsStr}</span>
-            <span className="font-semibold rounded bg-cyan-950 text-cyan-300 border border-cyan-800" style={{ fontSize: "calc(var(--clock-size) * 0.045)", padding: "2px 6px" }}>
+          <div className="flex items-baseline text-cyan-400 drop-shadow-[0_0_3px_#06b6d4]" style={{ gap: "calc(var(--clock-size) * 0.015)" }}>
+            <span className="font-extrabold" style={{ fontSize: "calc(var(--clock-size) * 0.15)" }}>{time12}</span>
+            <span className="font-bold text-pink-500" style={{ fontSize: "calc(var(--clock-size) * 0.08)" }}>:{secondsStr}</span>
+            <span className="font-semibold rounded bg-cyan-950 text-cyan-300 border border-cyan-800" style={{ fontSize: "calc(var(--clock-size) * 0.04)", padding: "2px 6px" }}>
               {ampm}
             </span>
           </div>
@@ -388,7 +388,7 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-zinc-950 flex flex-col items-center justify-center border border-zinc-800 shadow-md"
-          style={{ padding: "calc(var(--clock-size) * 0.04)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.04)", fontFamily: "'Share Tech Mono', monospace" }}
         >
           <div
             className="text-zinc-400 font-medium mb-2 uppercase tracking-wider"
@@ -398,14 +398,14 @@ function DigitalDisplay({
           </div>
           <div className="flex items-center" style={{ gap: "calc(var(--clock-size) * 0.015)" }}>
             <div
-              className="relative bg-zinc-900 border border-zinc-700/80 rounded-xl font-extrabold text-zinc-100 font-mono shadow-inner"
-              style={{ fontSize: "calc(var(--clock-size) * 0.14)", padding: "calc(var(--clock-size) * 0.02) calc(var(--clock-size) * 0.04)" }}
+              className="relative bg-zinc-900 border border-zinc-700/80 rounded-xl font-extrabold text-zinc-100 shadow-inner"
+              style={{ fontSize: "calc(var(--clock-size) * 0.15)", padding: "calc(var(--clock-size) * 0.02) calc(var(--clock-size) * 0.04)" }}
             >
               {time12}
               <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-black/60" />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="bg-zinc-800 text-amber-400 font-bold rounded border border-zinc-700 font-mono" style={{ fontSize: "calc(var(--clock-size) * 0.055)", padding: "2px 4px" }}>
+              <span className="bg-zinc-800 text-amber-400 font-bold rounded border border-zinc-700" style={{ fontSize: "calc(var(--clock-size) * 0.055)", padding: "2px 4px" }}>
                 :{secondsStr}
               </span>
               <span className="bg-zinc-800 text-zinc-300 font-bold rounded text-center" style={{ fontSize: "calc(var(--clock-size) * 0.045)", padding: "1px 4px" }}>
@@ -419,8 +419,8 @@ function DigitalDisplay({
     case "digital-lcd":
       return (
         <div
-          className="w-full h-full rounded-2xl bg-[#9ea88e] flex flex-col items-center justify-center border-4 border-zinc-800 text-zinc-900 font-mono shadow-inner relative"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          className="w-full h-full rounded-2xl bg-[#9ea88e] flex flex-col items-center justify-center border-4 border-zinc-800 text-zinc-900 shadow-inner relative"
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'Share Tech Mono', monospace" }}
         >
           <div className="w-full flex justify-between items-center font-bold border-b border-zinc-800/40 pb-1 mb-1" style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}>
             <span className="uppercase">{dayStr}</span>
@@ -462,22 +462,22 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-slate-950 flex flex-col items-center justify-center border border-rose-500/20 shadow-md relative overflow-hidden"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'Orbitron', sans-serif" }}
         >
           <div
-            className="uppercase font-mono tracking-widest text-slate-400 mb-1"
-            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
+            className="uppercase tracking-widest text-slate-400 mb-1"
+            style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}
           >
             {dayStr}
           </div>
-          <div className="flex items-baseline font-mono font-black bg-gradient-to-r from-rose-500 via-yellow-400 via-emerald-400 via-cyan-400 to-indigo-500 bg-clip-text text-transparent" style={{ fontSize: "calc(var(--clock-size) * 0.17)", gap: "calc(var(--clock-size) * 0.015)" }}>
+          <div className="flex items-baseline font-black bg-gradient-to-r from-rose-500 via-yellow-400 via-emerald-400 via-cyan-400 to-indigo-500 bg-clip-text text-transparent" style={{ fontSize: "calc(var(--clock-size) * 0.15)", gap: "calc(var(--clock-size) * 0.015)" }}>
             <span>{time12}</span>
-            <span className="opacity-90" style={{ fontSize: "calc(var(--clock-size) * 0.09)" }}>:{secondsStr}</span>
-            <span className="text-rose-400 ml-1 uppercase" style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}>{ampm}</span>
+            <span className="opacity-90" style={{ fontSize: "calc(var(--clock-size) * 0.08)" }}>:{secondsStr}</span>
+            <span className="text-rose-400 ml-1 uppercase" style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}>{ampm}</span>
           </div>
           <div
-            className="mt-2 text-slate-500 font-mono tracking-widest"
-            style={{ fontSize: "calc(var(--clock-size) * 0.038)" }}
+            className="mt-2 text-slate-500 tracking-widest"
+            style={{ fontSize: "calc(var(--clock-size) * 0.035)" }}
           >
             RGB SPECTRUM DISPLAY
           </div>
@@ -488,18 +488,18 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-slate-900 text-slate-100 flex flex-col items-center justify-between border border-slate-700 shadow-md"
-          style={{ padding: "calc(var(--clock-size) * 0.04)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.04)", fontFamily: "'Share Tech Mono', monospace" }}
         >
-          <div className="w-full flex justify-between items-center font-mono text-cyan-400 border-b border-slate-800 pb-1" style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}>
+          <div className="w-full flex justify-between items-center text-cyan-400 border-b border-slate-800 pb-1" style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}>
             <span>{dayStr}</span>
             <span className="flex items-center gap-1 text-amber-400">☀️ 72°F</span>
           </div>
-          <div className="flex items-baseline font-mono font-black text-white my-auto" style={{ fontSize: "calc(var(--clock-size) * 0.17)", gap: "calc(var(--clock-size) * 0.01)" }}>
+          <div className="flex items-baseline font-black text-white my-auto" style={{ fontSize: "calc(var(--clock-size) * 0.17)", gap: "calc(var(--clock-size) * 0.01)" }}>
             <span>{time12}</span>
             <span className="text-cyan-400" style={{ fontSize: "calc(var(--clock-size) * 0.09)" }}>:{secondsStr}</span>
             <span className="font-bold text-slate-400 ml-1" style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}>{ampm}</span>
           </div>
-          <div className="w-full flex justify-between items-center font-mono text-slate-400 border-t border-slate-800 pt-1" style={{ fontSize: "calc(var(--clock-size) * 0.035)" }}>
+          <div className="w-full flex justify-between items-center text-slate-400 border-t border-slate-800 pt-1" style={{ fontSize: "calc(var(--clock-size) * 0.035)" }}>
             <span>HUMIDITY: 45%</span>
             <span>ATOMIC SYNC</span>
           </div>
@@ -510,20 +510,20 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-zinc-900 flex flex-col items-center justify-center border border-zinc-800 shadow-md relative"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'Orbitron', sans-serif" }}
         >
           <div
-            className="font-mono text-zinc-400 mb-1 uppercase tracking-widest"
-            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
+            className="text-zinc-400 mb-1 uppercase tracking-widest"
+            style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}
           >
             {dayStr}
           </div>
-          <div className="flex items-baseline font-mono font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" style={{ fontSize: "calc(var(--clock-size) * 0.16)", gap: "calc(var(--clock-size) * 0.015)" }}>
+          <div className="flex items-baseline font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" style={{ fontSize: "calc(var(--clock-size) * 0.15)", gap: "calc(var(--clock-size) * 0.015)" }}>
             <span className="bg-zinc-800/80 rounded-xl border border-zinc-700 shadow-sm" style={{ padding: "calc(var(--clock-size) * 0.01) calc(var(--clock-size) * 0.03)" }}>
               {time12}
             </span>
-            <span className="text-zinc-400" style={{ fontSize: "calc(var(--clock-size) * 0.085)" }}>:{secondsStr}</span>
-            <span className="font-bold text-amber-400" style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}>{ampm}</span>
+            <span className="text-zinc-400" style={{ fontSize: "calc(var(--clock-size) * 0.08)" }}>:{secondsStr}</span>
+            <span className="font-bold text-amber-400" style={{ fontSize: "calc(var(--clock-size) * 0.04)" }}>{ampm}</span>
           </div>
         </div>
       );
@@ -532,19 +532,19 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-black flex flex-col items-center justify-center border-2 border-zinc-900 shadow-md relative"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'VT323', monospace" }}
         >
           <div
-            className="font-mono text-red-700 mb-1 tracking-widest uppercase"
-            style={{ fontSize: "calc(var(--clock-size) * 0.038)" }}
+            className="text-red-700 mb-1 tracking-widest uppercase"
+            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
           >
             ALARM 07:00 AM • {dayStr}
           </div>
-          <div className="flex items-baseline font-mono font-bold text-red-600 drop-shadow-[0_0_3px_rgba(220,38,38,0.4)]" style={{ fontSize: "calc(var(--clock-size) * 0.18)", gap: "calc(var(--clock-size) * 0.01)" }}>
+          <div className="flex items-baseline font-bold text-red-600 drop-shadow-[0_0_3px_rgba(220,38,38,0.4)]" style={{ fontSize: "calc(var(--clock-size) * 0.22)", gap: "calc(var(--clock-size) * 0.01)" }}>
             <span>{time12}</span>
-            <span className="text-red-700" style={{ fontSize: "calc(var(--clock-size) * 0.09)" }}>:{secondsStr}</span>
+            <span className="text-red-700" style={{ fontSize: "calc(var(--clock-size) * 0.12)" }}>:{secondsStr}</span>
           </div>
-          <div className="font-bold text-red-500 mt-1 uppercase tracking-wider" style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}>
+          <div className="font-bold text-red-500 mt-1 uppercase tracking-wider" style={{ fontSize: "calc(var(--clock-size) * 0.06)" }}>
             {ampm}
           </div>
         </div>
@@ -554,18 +554,18 @@ function DigitalDisplay({
       return (
         <div
           className="w-full h-full rounded-2xl bg-slate-950 flex flex-col items-center justify-center border border-cyan-900 shadow-md relative"
-          style={{ padding: "calc(var(--clock-size) * 0.05)" }}
+          style={{ padding: "calc(var(--clock-size) * 0.05)", fontFamily: "'VT323', monospace" }}
         >
           <div
-            className="font-mono text-cyan-700 mb-1 uppercase tracking-widest"
-            style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}
+            className="text-cyan-700 mb-1 uppercase tracking-widest"
+            style={{ fontSize: "calc(var(--clock-size) * 0.05)" }}
           >
             VACUUM TUBE // {dayStr}
           </div>
-          <div className="flex items-baseline font-mono font-black text-cyan-400 drop-shadow-[0_0_3px_#06b6d4]" style={{ fontSize: "calc(var(--clock-size) * 0.17)", gap: "calc(var(--clock-size) * 0.015)" }}>
+          <div className="flex items-baseline font-black text-cyan-400 drop-shadow-[0_0_3px_#06b6d4]" style={{ fontSize: "calc(var(--clock-size) * 0.22)", gap: "calc(var(--clock-size) * 0.015)" }}>
             <span>{time12}</span>
-            <span className="text-cyan-500 opacity-90" style={{ fontSize: "calc(var(--clock-size) * 0.09)" }}>:{secondsStr}</span>
-            <span className="text-cyan-300 font-bold" style={{ fontSize: "calc(var(--clock-size) * 0.045)" }}>{ampm}</span>
+            <span className="text-cyan-500 opacity-90" style={{ fontSize: "calc(var(--clock-size) * 0.12)" }}>:{secondsStr}</span>
+            <span className="text-cyan-300 font-bold" style={{ fontSize: "calc(var(--clock-size) * 0.06)" }}>{ampm}</span>
           </div>
         </div>
       );
